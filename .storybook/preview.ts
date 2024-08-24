@@ -1,7 +1,9 @@
-import type { Preview } from "@storybook/react";
+import type { Preview, StoryFn } from "@storybook/react";
 import "../src/app/globals.css";
-
 import { withThemeByClassName } from "@storybook/addon-themes";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 const preview: Preview = {
 	parameters: {

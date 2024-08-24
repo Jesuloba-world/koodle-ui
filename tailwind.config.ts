@@ -17,10 +17,11 @@ const config = {
 				"2xl": "1400px",
 			},
 		},
+		fontSize: { bsm: ["13px", "23px"] },
 		extend: {
 			colors: {
 				border: "hsl(var(--border))",
-				input: "hsl(var(--input))",
+				input: "var(--input)",
 				ring: "hsl(var(--ring))",
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
@@ -43,7 +44,7 @@ const config = {
 				},
 				muted: {
 					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
+					foreground: "hsla(var(--muted-foreground))",
 				},
 				accent: {
 					DEFAULT: "hsl(var(--accent))",
