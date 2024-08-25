@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontSize as DefaultFontSize } from "tailwindcss/defaultTheme";
 
 const config = {
 	darkMode: ["class"],
@@ -17,7 +18,7 @@ const config = {
 				"2xl": "1400px",
 			},
 		},
-		fontSize: { bsm: ["13px", "23px"] },
+		fontSize: { ...DefaultFontSize, bsm: ["13px", "23px"] },
 		extend: {
 			colors: {
 				border: "hsl(var(--border))",

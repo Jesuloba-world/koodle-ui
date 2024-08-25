@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { FieldError } from "react-hook-form";
 
 export interface InputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {
-	error?: string;
+	error?: string | FieldError;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -23,7 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				/>
 				{error && (
 					<span className="absolute right-3 top-1/2 font-medium -translate-y-1/2 text-bsm text-destructive">
-						{error}
+						{typeof error === "string" ? error : error.message}
 					</span>
 				)}
 			</div>
