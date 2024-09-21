@@ -61,3 +61,10 @@ export const Destructive: Story = {
 		variant: "destructive",
 	},
 };
+
+export const Processing: Story = {
+	args: {
+		...Primary.args,
+		isProcessing: true,
+	},
+};

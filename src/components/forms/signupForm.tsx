@@ -66,7 +66,7 @@ export const SignupForm = () => {
 			<p className="self-center mt-6 text-sm flex gap-1">
 				Already had an account?
 				<Link href="/auth/login">
-					<Button variant={"link"} size={"link"} asChild>
+					<Button variant={"link"} size={"link"}>
 						<span className="font-bold">login instead</span>
 					</Button>
 				</Link>
