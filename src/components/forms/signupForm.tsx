@@ -68,7 +68,7 @@ export const SignupForm = () => {
 								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="Enter your Email"
+										placeholder="Email"
 										error={fieldState.error}
 										{...field}
 									/>

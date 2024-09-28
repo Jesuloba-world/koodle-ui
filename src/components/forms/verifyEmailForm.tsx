@@ -67,6 +67,13 @@ export const VerifyEmailForm = () => {
 			{
 				onSuccess: () => {
 					form.reset();
+					const searchParams = new URLSearchParams({
+						email: email!,
+						otp: values.otp,
+					});
+					router.push(
+						`/auth/signup/set-password?${searchParams.toString()}`
+					);
 				},
 			}
 		);
