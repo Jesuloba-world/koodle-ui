@@ -15,12 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useStartSignup } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
 
 const emailSchema = z.object({
 	email: z.string().min(1, "Can't be empty").email(),
 });
 
 export const SignupForm = () => {
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof emailSchema>>({
 		resolver: zodResolver(emailSchema),
 		defaultValues: {
@@ -28,8 +32,22 @@ export const SignupForm = () => {
 		},
 	});
 
+	const { mutate: startSignup, isPending } = useStartSignup();
+
 	function onSubmit(values: z.infer<typeof emailSchema>) {
-		console.log(values);
+		startSignup(
+			{ email: values.email },
+			{
+				onSuccess() {
+					const searchParams = new URLSearchParams({
+						email: values.email,
+					});
+					router.push(
+						`/auth/signup/verify-email?${searchParams.toString()}`
+					);
+				},
+			}
+		);
 	}
 
 	return (
@@ -58,7 +76,7 @@ export const SignupForm = () => {
 							</FormItem>
 						)}
 					/>
-					<Button fullWidth type="submit">
+					<Button fullWidth type="submit" isProcessing={isPending}>
 						Continue
 					</Button>
 				</form>

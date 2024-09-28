@@ -1,13 +1,10 @@
-import { SignUpComponent } from "@/components/auth/signup";
-import { ThemeSwitch } from "@/components/themeSwitch";
+import { AuthWrapper } from "@/components/auth/authWrapper";
+import { SignupForm } from "@/components/forms/signupForm";
 
 export default function SignUp() {
 	return (
-		<div className="relative grid place-items-center min-h-screen">
-			<div className="absolute top-0 right-0 p-8">
-				<ThemeSwitch variant="2" />
-			</div>
-			<SignUpComponent />
-		</div>
+		<AuthWrapper>
+			<SignupForm />
+		</AuthWrapper>
 	);
 }
