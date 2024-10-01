@@ -19,7 +19,6 @@ import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from "axios";
 import globalAxios from "axios";
 
 export const BASE_PATH = process.env.NEXT_PUBLIC_API_URL!;
-
 /**
  *
  * @export

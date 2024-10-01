@@ -14,7 +14,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -27,7 +26,7 @@ const passwordSchema = z.object({
 		.regex(/\p{P}|\p{S}/u, "Password must contain at least one symbol"),
 });
 
-export const SetPasswordForm = () => {
+export const ResetPasswordSetForm = () => {
 	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
 
@@ -47,19 +46,9 @@ export const SetPasswordForm = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof passwordSchema>) {
-		// console.log(values);
-		setIsPending(true);
-		const response = await signIn("completesignup", {
-			redirect: false,
-			email: email,
-			password: values.password,
-			otp: otp,
-		});
-		setIsPending(false);
-		if (response?.error) {
-			// TODO: handle error
-		}
-		// redirect to dashboard page
+		console.log(values);
+
+		// redirect to login page
 	}
 
 	return (

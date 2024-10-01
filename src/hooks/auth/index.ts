@@ -3,10 +3,10 @@ import { AuthenticationApi, Configuration } from "@/api-sdk";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
 const config = new Configuration({
-	basePath: "https://www.google.com",
+	basePath: baseURL,
 });
 
-const api = new AuthenticationApi(config, undefined, axios);
+export const api = new AuthenticationApi(config, undefined, axios);
 
 export const useStartSignup = () =>
 	useMutation({

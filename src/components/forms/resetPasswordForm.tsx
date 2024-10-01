@@ -19,56 +19,34 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const passwordSchema = z.object({
-	password: z
-		.string()
-		.min(8, "Password must be at least 8 characters long")
-		.regex(/[A-Za-z]/, "Password must contain at least one letter")
-		.regex(/\d/, "Password must contain at least one number")
-		.regex(/\p{P}|\p{S}/u, "Password must contain at least one symbol"),
+	email: z.string().min(1, "Can't be empty").email(),
 });
 
-export const SetPasswordForm = () => {
-	const [isPending, setIsPending] = useState(false);
+export const ResetPasswordForm = () => {
 	const router = useRouter();
-
-	const searchParams = useSearchParams();
-	const email = searchParams.get("email");
-	const otp = searchParams.get("otp");
-
-	if (!email || !otp) {
-		router.replace("/auth/signup");
-	}
 
 	const form = useForm<z.infer<typeof passwordSchema>>({
 		resolver: zodResolver(passwordSchema),
 		defaultValues: {
-			password: "",
+			email: "",
 		},
 	});
 
 	async function onSubmit(values: z.infer<typeof passwordSchema>) {
-		// console.log(values);
-		setIsPending(true);
-		const response = await signIn("completesignup", {
-			redirect: false,
-			email: email,
-			password: values.password,
-			otp: otp,
+		console.log(values);
+		const searchParams = new URLSearchParams({
+			email: values.email,
 		});
-		setIsPending(false);
-		if (response?.error) {
-			// TODO: handle error
-		}
-		// redirect to dashboard page
+		router.push(`/auth/reset-password/verify?${searchParams.toString()}`);
 	}
 
 	return (
 		<div className="flex flex-col px-5 gap-4">
 			<div>
-				<h4 className="text-2xl font-bold">Set password</h4>
+				<h4 className="text-2xl font-bold">Forgot password</h4>
 				<p className="text-foreground">
-					Password requires a minimum of 8 characters and contains a
-					mix of letters, numbers, and symbols.
+					Enter the email associated with your account, and we&apos;ll
+					send you the verification code to reset your password.
 				</p>
 			</div>
 			<Form {...form}>
@@ -78,22 +56,21 @@ export const SetPasswordForm = () => {
 				>
 					<FormField
 						control={form.control}
-						name="password"
+						name="email"
 						render={({ field, fieldState }) => (
 							<FormItem>
-								<FormLabel>Password</FormLabel>
+								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="Password"
+										placeholder="Email"
 										error={fieldState.error}
-										type="password"
 										{...field}
 									/>
 								</FormControl>
 							</FormItem>
 						)}
 					/>
-					<Button fullWidth type="submit" isProcessing={isPending}>
+					<Button fullWidth type="submit">
 						Continue
 					</Button>
 				</form>

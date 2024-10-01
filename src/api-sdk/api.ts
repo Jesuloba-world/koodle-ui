@@ -179,11 +179,29 @@ export interface SetPasswordRespBody {
      */
     '$schema'?: string;
     /**
+     * the accesstoken for authentication
+     * @type {string}
+     * @memberof SetPasswordRespBody
+     */
+    'accesstoken': string;
+    /**
      * 
      * @type {string}
      * @memberof SetPasswordRespBody
      */
     'message': string;
+    /**
+     * the refreshtoken to refresh access
+     * @type {string}
+     * @memberof SetPasswordRespBody
+     */
+    'refreshtoken': string;
+    /**
+     * the user object
+     * @type {User}
+     * @memberof SetPasswordRespBody
+     */
+    'user': User;
 }
 /**
  * 
@@ -222,6 +240,43 @@ export interface StartSignUpRespBody {
      * @memberof StartSignUpRespBody
      */
     'message': string;
+}
+/**
+ * 
+ * @export
+ * @interface User
+ */
+export interface User {
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'CreatedAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'Email': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User
+     */
+    'EmailVerified': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'ID': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'UpdatedAt': string;
 }
 /**
  * 
