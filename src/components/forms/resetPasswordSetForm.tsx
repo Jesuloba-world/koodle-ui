@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useResetPassword } from "@/hooks/auth";
 
 const passwordSchema = z.object({
 	password: z
@@ -27,7 +28,6 @@ const passwordSchema = z.object({
 });
 
 export const ResetPasswordSetForm = () => {
-	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
 
 	const searchParams = useSearchParams();
@@ -38,6 +38,8 @@ export const ResetPasswordSetForm = () => {
 		router.replace("/auth/signup");
 	}
 
+	const { mutate: resetPassword, isPending } = useResetPassword();
+
 	const form = useForm<z.infer<typeof passwordSchema>>({
 		resolver: zodResolver(passwordSchema),
 		defaultValues: {
@@ -47,8 +49,15 @@ export const ResetPasswordSetForm = () => {
 
 	async function onSubmit(values: z.infer<typeof passwordSchema>) {
 		console.log(values);
-
-		// redirect to login page
+		resetPassword(
+			{ email: email!, otp: otp!, password: values.password },
+			{
+				onSuccess() {
+					form.reset();
+					router.push("/auth/login");
+				},
+			}
+		);
 	}
 
 	return (

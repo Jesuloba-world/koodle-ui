@@ -31,3 +31,27 @@ export const useSetPassword = () =>
 		mutationKey: ["set password"],
 		mutationFn: api.setPasswordForUser,
 	});
+
+export const useStartResetPassword = () =>
+	useMutation({
+		mutationKey: ["start reset password"],
+		mutationFn: api.startResetPassword,
+	});
+
+export const useResendResetPasswordOTP = () =>
+	useMutation({
+		mutationKey: ["resend reset password otp"],
+		mutationFn: api.resendResetPasswordOTP,
+	});
+
+export const useVerifyResetPasswordOTP = () =>
+	useMutation({
+		mutationKey: ["verify reset password otp"],
+		mutationFn: api.verifyResetPasswordOTP,
+	});
+
+export const useResetPassword = () =>
+	useMutation({
+		mutationKey: ["reset password"],
+		mutationFn: api.resetPassword,
+	});

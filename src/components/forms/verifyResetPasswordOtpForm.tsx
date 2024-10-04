@@ -23,7 +23,9 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import {
 	useResendEmailVerificationOtp,
+	useResendResetPasswordOTP,
 	useVerifyEmailWithOtp,
+	useVerifyResetPasswordOTP,
 } from "@/hooks/auth";
 
 const otpSchema = z.object({
@@ -34,7 +36,11 @@ export const VerifyResetPasswordOTPForm = () => {
 	const router = useRouter();
 	const [countdown, setCountdown] = useState(59);
 
-	const isResending = false;
+	const { mutate: resendResetPasswordOTP, isPending: isResending } =
+		useResendResetPasswordOTP();
+
+	const { mutate: verifyResetPasswordOTP, isPending } =
+		useVerifyResetPasswordOTP();
 
 	useEffect(() => {
 		if (countdown > 0) {
@@ -54,21 +60,39 @@ export const VerifyResetPasswordOTPForm = () => {
 	const email = searchParams.get("email");
 
 	if (!email) {
-		router.replace("/auth/signup");
+		router.replace("/auth/login");
 	}
 
 	function onSubmit(values: z.infer<typeof otpSchema>) {
 		console.log(values);
-		const searchParams = new URLSearchParams({
-			email: email!,
-			otp: values.otp,
-		});
-		router.push(`/auth/reset-password/setnew?${searchParams.toString()}`);
+		verifyResetPasswordOTP(
+			{
+				email: email!,
+				otp: values.otp,
+			},
+			{
+				onSuccess() {
+					const searchParams = new URLSearchParams({
+						email: email!,
+						otp: values.otp,
+					});
+					router.push(
+						`/auth/reset-password/setnew?${searchParams.toString()}`
+					);
+				},
+			}
+		);
 	}
 
 	async function handleResendOTP() {
-		console.log("Resend otp");
-		setCountdown(59);
+		resendResetPasswordOTP(
+			{ email: email! },
+			{
+				onSuccess() {
+					setCountdown(59);
+				},
+			}
+		);
 	}
 
 	return (

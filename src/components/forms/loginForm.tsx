@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 const loginSchema = z.object({
 	email: z.string().min(1, "Can't be empty").email(),
@@ -23,6 +25,8 @@ const loginSchema = z.object({
 });
 
 export const LoginForm = () => {
+	const [isPending, setIsPending] = useState(false);
+
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -31,8 +35,20 @@ export const LoginForm = () => {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof loginSchema>) {
+	async function onSubmit(values: z.infer<typeof loginSchema>) {
 		console.log(values);
+		setIsPending(true);
+		const response = await signIn("login", {
+			redirect: false,
+			email: values.email,
+			password: values.password,
+		});
+		setIsPending(false);
+		if (response?.error) {
+			// TODO: handle error
+			console.log(response);
+		}
+		// redirect to dashboard page
 	}
 
 	return (
@@ -79,11 +95,16 @@ export const LoginForm = () => {
 						)}
 					/>
 					<Link href="/auth/reset-password">
-						<Button variant={"link"} size={"link"}>
+						<Button variant={"link"} size={"link"} type="button">
 							<span className="font-bold">Forgot password?</span>
 						</Button>
 					</Link>
-					<Button fullWidth type="submit">
+					<Button
+						fullWidth
+						type="submit"
+						isProcessing={isPending}
+						disabled={isPending}
+					>
 						Continue
 					</Button>
 				</form>

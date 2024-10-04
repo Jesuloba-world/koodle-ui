@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useStartResetPassword } from "@/hooks/auth";
 
 const passwordSchema = z.object({
 	email: z.string().min(1, "Can't be empty").email(),
@@ -32,12 +33,23 @@ export const ResetPasswordForm = () => {
 		},
 	});
 
+	const { mutate: startResetPassword, isPending } = useStartResetPassword();
+
 	async function onSubmit(values: z.infer<typeof passwordSchema>) {
 		console.log(values);
-		const searchParams = new URLSearchParams({
-			email: values.email,
-		});
-		router.push(`/auth/reset-password/verify?${searchParams.toString()}`);
+		startResetPassword(
+			{ email: values.email },
+			{
+				onSuccess() {
+					const searchParams = new URLSearchParams({
+						email: values.email,
+					});
+					router.push(
+						`/auth/reset-password/verify?${searchParams.toString()}`
+					);
+				},
+			}
+		);
 	}
 
 	return (
@@ -70,7 +82,7 @@ export const ResetPasswordForm = () => {
 							</FormItem>
 						)}
 					/>
-					<Button fullWidth type="submit">
+					<Button fullWidth type="submit" isProcessing={isPending}>
 						Continue
 					</Button>
 				</form>
