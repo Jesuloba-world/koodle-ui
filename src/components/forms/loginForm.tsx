@@ -25,6 +25,8 @@ const loginSchema = z.object({
 });
 
 export const LoginForm = () => {
+	const router = useRouter();
+
 	const [isPending, setIsPending] = useState(false);
 
 	const form = useForm<z.infer<typeof loginSchema>>({
@@ -48,7 +50,9 @@ export const LoginForm = () => {
 			// TODO: handle error
 			console.log(response);
 		}
-		// redirect to dashboard page
+		if (response?.ok && !response.error) {
+			router.push("/boards");
+		}
 	}
 
 	return (

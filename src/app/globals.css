@@ -25,7 +25,7 @@
 		--destructive: 0 78% 63%;
 		--destructive-hover: 0 100% 80%;
 		--destructive-foreground: 0 0% 100%;
-		--border: 214.3 31.8% 91.4%;
+		--border: 221 69% 94%;
 		--input: rgba(130, 143, 163, 0.25);
 		--ring: 215 25% 30%;
 		--radius: 0.5rem;
@@ -58,7 +58,7 @@
 		--destructive: 0 78% 63%;
 		--destructive-hover: 0 100% 80%;
 		--destructive-foreground: 0 0% 100%;
-		--border: 217.2 32.6% 17.5%;
+		--border: 236 11% 27%;
 		--input: rgba(130, 143, 163, 0.25);
 		--ring: 215 25% 30%;
 		--chart-1: 220 70% 50%;
@@ -76,4 +76,29 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* TYPOGRAPHY */
+.heading-xl {
+	@apply text-2xl font-bold leading-[30px];
+}
+
+.heading-l {
+	@apply text-lg font-bold leading-[24px];
+}
+
+.heading-m {
+	@apply text-base font-bold leading-[20px];
+}
+
+.heading-s {
+	@apply text-xs font-bold leading-[15px] tracking-[2.4px];
+}
+
+.body-l {
+	@apply text-bsm font-medium;
+}
+
+.body-m {
+	@apply text-xs font-bold leading-[15px];
 }

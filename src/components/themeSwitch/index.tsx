@@ -27,7 +27,7 @@ export const ThemeSwitch = ({ variant = "1" }: { variant?: "1" | "2" }) => {
 		>
 			<Image src={LightTheme} alt="light theme" />
 			<Switch
-				className="h-5 w-10 data-[state=unchecked]:bg-primary"
+				className="h-5 w-10 data-[state=unchecked]:bg-primary hover:bg-primary-hover"
 				thumbClassName="h-[14px] w-[14px] bg-white"
 				checked={theme === "dark"}
 				onCheckedChange={(checked) =>
