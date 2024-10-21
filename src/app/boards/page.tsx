@@ -1,3 +1,4 @@
+import { CreateBoardDialog } from "@/components/dialog/createBoard";
 import { Button } from "@/components/ui/button";
 
 export default function EmptyBoardPage() {
@@ -6,7 +7,9 @@ export default function EmptyBoardPage() {
 			<p className="heading-l">
 				No board selected, create a new board or select an existing one.
 			</p>
-			<Button>+ Create New Board</Button>
+			<CreateBoardDialog>
+				<Button>+ Create New Board</Button>
+			</CreateBoardDialog>
 		</div>
 	);
 }

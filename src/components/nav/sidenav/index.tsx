@@ -13,7 +13,7 @@ export const SideBar = () => {
 		<>
 			<div
 				className={cn(
-					"w-[300px] bg-background-2 h-auto pt-4 pb-8 pr-6 flex flex-col justify-between transition-all duration-300 ease-in-out translate-x-0",
+					"w-[300px] bg-background-2 h-auto pt-4 pb-8 pr-6 flex flex-col border-r justify-between transition-all duration-300 ease-in-out translate-x-0",
 					{ "-translate-x-full -mr-[300px]": !isOpen }
 				)}
 			>

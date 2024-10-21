@@ -1,5 +1,6 @@
 import { BoardIcon } from "@/assets/icon-board";
 import { Button } from "@/components/ui/button";
+import { CreateBoardDialog } from "@/components/dialog/createBoard";
 
 export const Boards = () => {
 	return (
@@ -12,13 +13,15 @@ export const Boards = () => {
 					Platform Launch
 				</Button>
 				{/* Create button */}
-				<Button
-					variant={"sidebar"}
-					size={"sidebar"}
-					className="text-primary"
-				>
-					<BoardIcon /> + Create New Board
-				</Button>
+				<CreateBoardDialog>
+					<Button
+						variant={"sidebar"}
+						size={"sidebar"}
+						className="text-primary"
+					>
+						<BoardIcon /> + Create New Board
+					</Button>
+				</CreateBoardDialog>
 			</div>
 		</div>
 	);
