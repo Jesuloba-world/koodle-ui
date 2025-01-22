@@ -1,5 +1,9 @@
+import { client, setPasswordForUser } from "@/client";
 import Credentials from "next-auth/providers/credentials";
-import { api } from "@/hooks/auth";
+
+client.setConfig({
+	baseURL: process.env.NEXT_PUBLIC_API_URL!,
+});
 
 export const SignUpProvider = Credentials({
 	id: "completesignup",
@@ -10,19 +14,23 @@ export const SignUpProvider = Credentials({
 	},
 	authorize: async (credentials) => {
 		try {
-			const response = await api.setPasswordForUser({
-				email: credentials.email as string,
-				password: credentials.password as string,
-				otp: credentials.otp as string,
+			const response = await setPasswordForUser({
+				body: {
+					email: credentials.email as string,
+					password: credentials.password as string,
+					otp: credentials.otp as string,
+				},
 			});
 			const expiryTime = new Date(new Date().getTime() + 60 * 60 * 1000);
-			return {
-				id: response.data.user.ID,
-				email: response.data.user.Email,
-				token: response.data.accesstoken,
-				refresh: response.data.refreshtoken,
-				tokenExpires: expiryTime.toISOString(),
-			};
+			if (response.data) {
+				return {
+					id: response.data.user.id,
+					email: response.data.user.email,
+					token: response.data.accesstoken,
+					refresh: response.data.refreshtoken,
+					tokenExpires: expiryTime.toISOString(),
+				};
+			} else throw new Error("An error occured during signup");
 		} catch (err) {
 			throw new Error((err as any).response.data.message);
 		}

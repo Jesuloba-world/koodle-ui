@@ -9,9 +9,11 @@
 		"lint": "next lint",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"generate-api": "openapi-generator-cli generate -i http://localhost:10001/openapi.json -g typescript-axios -o src/api-sdk"
+		"generate-api": "openapi-ts",
+		"generate-api-old": "openapi-generator-cli generate -i http://localhost:10001/openapi.json -g typescript-axios -o src/api-sdk"
 	},
 	"dependencies": {
+		"@hey-api/client-axios": "^0.5.1",
 		"@hookform/resolvers": "^3.9.0",
 		"@radix-ui/react-avatar": "^1.1.1",
 		"@radix-ui/react-dialog": "^1.1.2",
@@ -37,6 +39,7 @@
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "1.7.0",
+		"@hey-api/openapi-ts": "^0.62.3",
 		"@storybook/addon-essentials": "^8.2.9",
 		"@storybook/addon-interactions": "^8.2.9",
 		"@storybook/addon-links": "^8.2.9",

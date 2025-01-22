@@ -38,7 +38,6 @@ export const LoginForm = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
-		console.log(values);
 		setIsPending(true);
 		const response = await signIn("login", {
 			redirect: false,

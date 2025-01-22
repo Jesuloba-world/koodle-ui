@@ -58,8 +58,12 @@ export const SetPasswordForm = () => {
 		setIsPending(false);
 		if (response?.error) {
 			// TODO: handle error
+			console.log(response);
 		}
 		// redirect to dashboard page
+		if (response?.ok && !response.error) {
+			router.push("/boards");
+		}
 	}
 
 	return (

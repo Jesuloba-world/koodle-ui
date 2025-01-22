@@ -9,7 +9,6 @@ declare module "next-auth" {
 
 	interface Session {
 		token?: string;
-		refresh?: string;
 		tokenExpires?: string;
 	}
 }

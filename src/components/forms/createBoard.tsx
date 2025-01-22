@@ -8,6 +8,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { IconCross } from "@/assets/icon-cross";
+import { useCreateBoard } from "@/hooks/board";
 
 const newBoardSchema = z.object({
 	boardName: z.string().min(1, { message: "Can't be empty" }),
@@ -19,6 +20,8 @@ const newBoardSchema = z.object({
 });
 
 export const CreateBoardForm = () => {
+	const { mutate, isPending } = useCreateBoard();
+
 	const form = useForm<z.infer<typeof newBoardSchema>>({
 		resolver: zodResolver(newBoardSchema),
 		defaultValues: {
@@ -33,7 +36,19 @@ export const CreateBoardForm = () => {
 	});
 
 	function onSubmit(values: z.infer<typeof newBoardSchema>) {
-		console.log(values);
+		mutate(
+			{
+				board: {
+					name: values.boardName,
+					columns: values.columns.map((el) => el.name),
+				},
+			},
+			{
+				onSuccess(data) {
+					console.log(data);
+				},
+			}
+		);
 	}
 
 	return (
@@ -62,7 +77,11 @@ export const CreateBoardForm = () => {
 						)}
 					/>
 					<div className="space-y-2">
-						<FormLabel className="body-m">Board Columns</FormLabel>
+						{fields.length > 0 && (
+							<FormLabel className="body-m">
+								Board Columns
+							</FormLabel>
+						)}
 						<div className="space-y-3">
 							{fields.map((field, index) => (
 								<FormField
@@ -106,7 +125,7 @@ export const CreateBoardForm = () => {
 						</div>
 					</div>
 
-					<Button type="submit" fullWidth>
+					<Button type="submit" isProcessing={isPending} fullWidth>
 						Create New Board
 					</Button>
 				</form>
