@@ -5,7 +5,8 @@ import {
 	createBoard,
 	getAllMyBoards,
 } from "@/client";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 client.setConfig({
 	baseURL: process.env.NEXT_PUBLIC_API_URL!,
@@ -13,6 +14,13 @@ client.setConfig({
 
 client.instance.interceptors.request.use(async (config) => {
 	const session = await getSession();
+
+	if (session?.error === "RefreshTokenError") {
+		// logout
+		signOut();
+		redirect("/auth/login");
+	}
+
 	if (session?.token) {
 		config.headers.Authorization = `Bearer ${session.token}`;
 	}

@@ -10,6 +10,7 @@ declare module "next-auth" {
 	interface Session {
 		token?: string;
 		tokenExpires?: string;
+		error?: "RefreshTokenError";
 	}
 }
 
@@ -21,5 +22,6 @@ declare module "next-auth/jwt" {
 		refresh?: string;
 		id?: string;
 		tokenExpires?: string;
+		error?: "RefreshTokenError";
 	}
 }

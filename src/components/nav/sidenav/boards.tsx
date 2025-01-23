@@ -4,11 +4,7 @@ import { CreateBoardDialog } from "@/components/dialog/createBoard";
 import { useGetMyBoards } from "@/hooks/board";
 
 export const Boards = () => {
-	const { data, error } = useGetMyBoards();
-
-	console.log(data);
-
-	console.log(error);
+	const { data } = useGetMyBoards();
 
 	return (
 		<div className="space-y-4">
