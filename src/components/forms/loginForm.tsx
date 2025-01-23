@@ -39,19 +39,26 @@ export const LoginForm = () => {
 
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
 		setIsPending(true);
-		const response = await signIn("login", {
+		signIn("login", {
 			redirect: false,
 			email: values.email,
 			password: values.password,
-		});
-		setIsPending(false);
-		if (response?.error) {
-			// TODO: handle error
-			console.log(response);
-		}
-		if (response?.ok && !response.error) {
-			router.push("/boards");
-		}
+		})
+			.then((response) => {
+				if (response?.error) {
+					// TODO: handle error
+					console.log(response);
+				}
+				if (response?.ok && !response.error) {
+					router.push("/boards");
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+			})
+			.finally(() => {
+				setIsPending(false);
+			});
 	}
 
 	return (

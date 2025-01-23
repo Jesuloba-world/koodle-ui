@@ -2,23 +2,37 @@ import { BoardIcon } from "@/assets/icon-board";
 import { Button } from "@/components/ui/button";
 import { CreateBoardDialog } from "@/components/dialog/createBoard";
 import { useGetMyBoards } from "@/hooks/board";
+import { isAxiosError } from "axios";
+import Link from "next/link";
 
 export const Boards = () => {
 	const { data } = useGetMyBoards();
 
+	const boardCount = !isAxiosError(data) && (data?.boards?.length ?? 0);
+
 	return (
 		<div className="space-y-4">
-			<h5 className="heading-s ml-8">
-				ALL BOARDS ({(data?.data?.boards ?? []).length})
-			</h5>
+			<h5 className="heading-s ml-8">ALL BOARDS ({boardCount})</h5>
 			<div className="flex flex-col">
 				{/* Links to boards */}
-				{(data?.data?.boards ?? []).map((board) => (
-					<Button key={board.id} variant={"sidebar"} size={"sidebar"}>
-						<BoardIcon />
-						{board.name}
-					</Button>
-				))}
+				{!isAxiosError(data)
+					? (data?.boards ?? []).map((board) => (
+							<Link
+								key={board.id}
+								href={`/boards/${board.id}`}
+								passHref
+							>
+								<Button
+									variant={"sidebar"}
+									size={"sidebar"}
+									className="w-full"
+								>
+									<BoardIcon />
+									{board.name}
+								</Button>
+							</Link>
+						))
+					: null}
 				{/* Create button */}
 				<CreateBoardDialog>
 					<Button

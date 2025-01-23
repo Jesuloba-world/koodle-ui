@@ -30,6 +30,8 @@ export const LoginProvider = Credentials({
 			});
 
 			const expiryTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+			// const expiryTime = new Date(new Date().getTime() + 5 * 60 * 1000);
+
 			if (response.data) {
 				return {
 					id: response.data.user.id,
