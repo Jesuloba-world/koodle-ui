@@ -6,15 +6,13 @@ export type Board = {
     id: string;
     name: string;
     updatedAt: string;
-    user: User;
-    userId: string;
 };
 
 export type BoardInput = {
     /**
      * Columns of board
      */
-    columns: Array<string> | null;
+    columns: Array<ColumnInput> | null;
     /**
      * Name of board
      */
@@ -41,13 +39,24 @@ export type BoardObject = {
 };
 
 export type Column = {
-    BoardID: string;
-    CreatedAt: string;
-    ID: string;
-    Name: string;
-    Position: number;
-    Tasks: Array<Task> | null;
-    UpdatedAt: string;
+    color: string;
+    createdAt: string;
+    id: string;
+    name: string;
+    position: number;
+    tasks: Array<Task> | null;
+    updatedAt: string;
+};
+
+export type ColumnInput = {
+    /**
+     * ID of column (empty for new columns)
+     */
+    id?: string;
+    /**
+     * Name of column
+     */
+    name: string;
 };
 
 export type CreateBoardReqBody = {
@@ -394,15 +403,6 @@ export type UpdateBoardRespBody = {
      */
     board: BoardObject;
     message: string;
-};
-
-export type User = {
-    Boards: Array<Board> | null;
-    CreatedAt: string;
-    Email: string;
-    EmailVerified: boolean;
-    ID: string;
-    UpdatedAt: string;
 };
 
 export type UserResponse = {

@@ -35,6 +35,9 @@ const buttonVariants = cva(
 			fullWidth: {
 				true: "w-full",
 			},
+			active: {
+				true: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-foreground",
+			},
 		},
 		defaultVariants: {
 			variant: "default",
@@ -61,6 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			isProcessing,
 			disabled,
 			children,
+			active,
 			asChild = false,
 			...props
 		},
@@ -70,7 +74,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		return (
 			<Comp
 				className={cn(
-					buttonVariants({ variant, size, fullWidth, className })
+					buttonVariants({
+						variant,
+						size,
+						active,
+						fullWidth,
+						className,
+					})
 				)}
 				disabled={isProcessing || disabled}
 				ref={ref}

@@ -48,13 +48,15 @@ async function maybePerformTokenRefresh(token: any, response: Response) {
 		!decodedCookieAsToken ||
 		!shouldUpdateToken(decodedCookieAsToken.tokenExpires as string)
 	) {
-		console.log(
-			"no need to refresh token",
-			formatDistanceToNowStrict(
-				parseISO(decodedCookieAsToken?.tokenExpires!)
-			),
-			"more"
-		);
+		if (decodedCookieAsToken?.tokenExpires) {
+			console.log(
+				"no need to refresh token",
+				formatDistanceToNowStrict(
+					parseISO(decodedCookieAsToken.tokenExpires)
+				),
+				"more"
+			);
+		}
 		return response;
 	}
 

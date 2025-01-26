@@ -4,6 +4,8 @@ import { DynamicLogo } from "../dynamicLogo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNav } from "./navProvider";
 import { cn } from "@/lib/utils";
+import { useGetBoard } from "@/hooks/board";
+import { useParams } from "next/navigation";
 
 export const TopNav = ({ userEmail }: { userEmail: string }) => {
 	const initials = userEmail
@@ -14,6 +16,12 @@ export const TopNav = ({ userEmail }: { userEmail: string }) => {
 		.slice(0, 2);
 
 	const { isOpen } = useNav();
+
+	const params = useParams<{ boardID: string }>();
+
+	const { data } = useGetBoard(params.boardID);
+
+	const board = data?.board;
 
 	return (
 		<div className="bg-background-2 h-24 flex">
@@ -26,7 +34,11 @@ export const TopNav = ({ userEmail }: { userEmail: string }) => {
 				<DynamicLogo />
 			</div>
 			<div className="border-b w-full flex items-center justify-between pl-6 pr-8">
-				<div>{/* The board name */}</div>
+				<div>
+					<h1 className="heading-xl text-foreground-2">
+						{board?.name}
+					</h1>
+				</div>
 				<div>
 					<AvatarComponent initials={initials || "NA"} />
 				</div>

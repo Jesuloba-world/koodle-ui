@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	Dialog,
 	DialogContent,
@@ -6,24 +8,40 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { CreateBoardForm } from "@/components/forms/createBoard";
 import VisuallyHidden from "@/components/ui/visuallyHidden";
 
-export const CreateBoardDialog = ({ children }: { children?: ReactNode }) => {
+export const CreateBoardDialog = ({
+	isEdit,
+	children,
+}: {
+	isEdit?: boolean;
+	children?: ReactNode;
+}) => {
+	const [open, setOpen] = useState(false);
+
+	const closedialog = () => {
+		setOpen(false);
+	};
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Add New Board</DialogTitle>
+					<DialogTitle>
+						{isEdit ? "Edit Board" : "Add New Board"}
+					</DialogTitle>
 					<VisuallyHidden>
 						<DialogDescription>
-							This board is for creating new board
+							{isEdit
+								? "Edit existing board"
+								: "This modal is for creating new board"}
 						</DialogDescription>
 					</VisuallyHidden>
 				</DialogHeader>
-				<CreateBoardForm />
+				<CreateBoardForm close={closedialog} />
 			</DialogContent>
 		</Dialog>
 	);

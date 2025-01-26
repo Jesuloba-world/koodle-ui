@@ -9,8 +9,7 @@
 		"lint": "next lint",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"generate-api": "openapi-ts",
-		"generate-api-old": "openapi-generator-cli generate -i http://localhost:10001/openapi.json -g typescript-axios -o src/api-sdk"
+		"generate-api": "openapi-ts"
 	},
 	"dependencies": {
 		"@hey-api/client-axios": "^0.5.1",

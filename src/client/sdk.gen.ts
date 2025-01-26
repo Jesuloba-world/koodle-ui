@@ -148,7 +148,7 @@ export const getBoard = <ThrowOnError extends boolean = false>(options: Options<
 };
 
 export const updateBoard = <ThrowOnError extends boolean = false>(options: Options<UpdateBoardData, ThrowOnError>) => {
-    return (options?.client ?? client).put<UpdateBoardResponse, UpdateBoardError, ThrowOnError>({
+    return (options?.client ?? client).patch<UpdateBoardResponse, UpdateBoardError, ThrowOnError>({
         url: '/boards/{boardId}',
         ...options,
         headers: {

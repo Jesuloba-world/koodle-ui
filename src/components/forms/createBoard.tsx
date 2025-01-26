@@ -8,19 +8,28 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { IconCross } from "@/assets/icon-cross";
-import { useCreateBoard } from "@/hooks/board";
+import { useCreateBoard, useGetBoard, useUpdateBoard } from "@/hooks/board";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 const newBoardSchema = z.object({
 	boardName: z.string().min(1, { message: "Can't be empty" }),
 	columns: z.array(
 		z.object({
+			c_id: z.string().optional(),
 			name: z.string().min(1, { message: "Can't be empty" }),
 		})
 	),
 });
 
-export const CreateBoardForm = () => {
-	const { mutate, isPending } = useCreateBoard();
+export const CreateBoardForm = ({ close }: { close: () => void }) => {
+	const { boardID } = useParams<{ boardID: string }>();
+	const { mutate: createBoard, isPending: isCreating } = useCreateBoard();
+	const { mutate: updateBoard, isPending: isUpdating } = useUpdateBoard();
+
+	const { data, refetch } = useGetBoard(boardID);
+
+	console.log(data);
 
 	const form = useForm<z.infer<typeof newBoardSchema>>({
 		resolver: zodResolver(newBoardSchema),
@@ -35,21 +44,75 @@ export const CreateBoardForm = () => {
 		name: "columns",
 	});
 
+	console.log(fields);
+
+	useEffect(() => {
+		if (boardID && data) {
+			form.setValue("boardName", data.board.name);
+			form.setValue(
+				"columns",
+				(data.board.columns || [])?.map((col) => ({
+					c_id: col.id,
+					name: col.name,
+				}))
+			);
+		}
+	}, [boardID, form, data]);
+
+	console.log(form.watch("columns"));
+
 	function onSubmit(values: z.infer<typeof newBoardSchema>) {
-		mutate(
-			{
-				board: {
-					name: values.boardName,
-					columns: values.columns.map((el) => el.name),
+		console.log(values);
+		if (!boardID) {
+			// create board
+			createBoard(
+				{
+					board: {
+						name: values.boardName,
+						columns: values.columns.map((el) => ({
+							name: el.name,
+							id: el.c_id,
+						})),
+					},
 				},
-			},
-			{
-				onSuccess(data) {
-					console.log(data);
+				{
+					onSuccess(data) {
+						console.log(data);
+						handleSuccess();
+					},
+				}
+			);
+		} else {
+			// update board
+			updateBoard(
+				{
+					boardId: boardID,
+					data: {
+						board: {
+							name: values.boardName,
+							columns: values.columns.map((el) => ({
+								name: el.name,
+								id: el.c_id,
+							})),
+						},
+					},
 				},
-			}
-		);
+				{
+					onSuccess: () => {
+						handleSuccess();
+						refetch();
+					},
+				}
+			);
+		}
 	}
+
+	const handleSuccess = () => {
+		close();
+		form.reset();
+	};
+
+	const isPending = isCreating || isUpdating;
 
 	return (
 		<div>
@@ -126,7 +189,7 @@ export const CreateBoardForm = () => {
 					</div>
 
 					<Button type="submit" isProcessing={isPending} fullWidth>
-						Create New Board
+						{boardID ? "Save Changes" : "Create New Board"}
 					</Button>
 				</form>
 			</Form>

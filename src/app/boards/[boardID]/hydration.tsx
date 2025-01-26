@@ -1,13 +1,21 @@
+import { getQueryClient } from "@/app/get-query-client";
+import { GetBoardContentOptions } from "@/hooks/board";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { getQueryClient } from "../get-query-client";
-import { GetMyBoardsOptions } from "@/hooks/board";
 
-export const Hydrator = async ({ children }: { children: ReactNode }) => {
+export const BoardContentHydrator = async ({
+	children,
+	boardId,
+}: {
+	children: ReactNode;
+	boardId: string;
+}) => {
 	const queryClient = getQueryClient();
 
 	try {
-		await queryClient.prefetchQuery(GetMyBoardsOptions);
+		if (boardId) {
+			await queryClient.prefetchQuery(GetBoardContentOptions(boardId));
+		}
 	} catch (err) {
 		console.error("Prefetch error:", err);
 	}
