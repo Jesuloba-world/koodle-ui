@@ -22,14 +22,18 @@ const newBoardSchema = z.object({
 	),
 });
 
-export const CreateBoardForm = ({ close }: { close: () => void }) => {
-	const { boardID } = useParams<{ boardID: string }>();
+export const CreateBoardForm = ({
+	close,
+	boardID,
+}: {
+	close: () => void;
+	boardID?: string;
+}) => {
+	const {} = useParams<{ boardID: string }>();
 	const { mutate: createBoard, isPending: isCreating } = useCreateBoard();
 	const { mutate: updateBoard, isPending: isUpdating } = useUpdateBoard();
 
 	const { data, refetch } = useGetBoard(boardID);
-
-	console.log(data);
 
 	const form = useForm<z.infer<typeof newBoardSchema>>({
 		resolver: zodResolver(newBoardSchema),
@@ -44,8 +48,6 @@ export const CreateBoardForm = ({ close }: { close: () => void }) => {
 		name: "columns",
 	});
 
-	console.log(fields);
-
 	useEffect(() => {
 		if (boardID && data) {
 			form.setValue("boardName", data.board.name);
@@ -58,8 +60,6 @@ export const CreateBoardForm = ({ close }: { close: () => void }) => {
 			);
 		}
 	}, [boardID, form, data]);
-
-	console.log(form.watch("columns"));
 
 	function onSubmit(values: z.infer<typeof newBoardSchema>) {
 		console.log(values);

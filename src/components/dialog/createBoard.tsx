@@ -11,37 +11,50 @@ import {
 import { ReactNode, useState } from "react";
 import { CreateBoardForm } from "@/components/forms/createBoard";
 import VisuallyHidden from "@/components/ui/visuallyHidden";
+import { useControllableState } from "@/hooks/use-controllable-state";
 
 export const CreateBoardDialog = ({
-	isEdit,
+	boardId,
 	children,
+	onOpenChange,
+	open: openProp,
 }: {
-	isEdit?: boolean;
+	boardId?: string;
 	children?: ReactNode;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 }) => {
-	const [open, setOpen] = useState(false);
+	const [isOpen, setIsOpen] = useControllableState({
+		prop: openProp,
+		onChange: (newValue) => {
+			requestAnimationFrame(() => {
+				onOpenChange?.(newValue);
+			});
+		},
+		initialValue: false,
+	});
 
 	const closedialog = () => {
-		setOpen(false);
+		setIsOpen(false);
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>
-						{isEdit ? "Edit Board" : "Add New Board"}
+						{boardId ? "Edit Board" : "Add New Board"}
 					</DialogTitle>
 					<VisuallyHidden>
 						<DialogDescription>
-							{isEdit
+							{boardId
 								? "Edit existing board"
 								: "This modal is for creating new board"}
 						</DialogDescription>
 					</VisuallyHidden>
 				</DialogHeader>
-				<CreateBoardForm close={closedialog} />
+				<CreateBoardForm boardID={boardId} close={closedialog} />
 			</DialogContent>
 		</Dialog>
 	);

@@ -6,6 +6,9 @@ import { useNav } from "./navProvider";
 import { cn } from "@/lib/utils";
 import { useGetBoard } from "@/hooks/board";
 import { useParams } from "next/navigation";
+import { Button } from "../ui/button";
+import { EllipsisVertical } from "lucide-react";
+import { BoardContextMenu } from "../dropdownMenu/boardContextMenu";
 
 export const TopNav = ({ userEmail }: { userEmail: string }) => {
 	const initials = userEmail
@@ -39,7 +42,23 @@ export const TopNav = ({ userEmail }: { userEmail: string }) => {
 						{board?.name}
 					</h1>
 				</div>
-				<div>
+
+				<div className="flex gap-3 items-center">
+					{params.boardID && (
+						<div className="flex items-center gap-4">
+							<Button
+								className="px-6"
+								disabled={(board?.columns?.length ?? 0) < 1}
+							>
+								+ Add New Task
+							</Button>
+							<BoardContextMenu>
+								<Button variant={"ghost"} size="icon">
+									<EllipsisVertical />
+								</Button>
+							</BoardContextMenu>
+						</div>
+					)}
 					<AvatarComponent initials={initials || "NA"} />
 				</div>
 			</div>

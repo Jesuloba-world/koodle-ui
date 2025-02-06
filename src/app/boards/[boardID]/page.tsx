@@ -11,7 +11,7 @@ export default function BoardContent({
 			<p className="heading-l">
 				This board is empty. Create a new column to get started.
 			</p>
-			<CreateBoardDialog isEdit={!!boardID}>
+			<CreateBoardDialog boardId={boardID}>
 				<Button>+ Add New Column</Button>
 			</CreateBoardDialog>
 		</div>
