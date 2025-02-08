@@ -22,7 +22,7 @@ export const TopNav = ({ userEmail }: { userEmail: string }) => {
 
 	const params = useParams<{ boardID: string }>();
 
-	const { data } = useGetBoard(params.boardID);
+	const { data } = useGetBoard({ id: params.boardID });
 
 	const board = data?.board;
 

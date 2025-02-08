@@ -92,7 +92,7 @@
 }
 
 .heading-s {
-	@apply text-xs font-bold leading-[15px] tracking-[2.4px];
+	@apply text-xs font-bold leading-[15px] tracking-[2.4px] uppercase;
 }
 
 .body-l {

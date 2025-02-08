@@ -47,7 +47,7 @@ export const DeleteBoard = ({
 		});
 	};
 
-	const { data } = useGetBoard(boardId);
+	const { data } = useGetBoard({ id: boardId });
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -83,14 +83,23 @@ export const useGetMyBoards = () => {
 	return useSuspenseQuery(GetMyBoardsOptions);
 };
 
-export const GetBoardContentOptions = (id?: string) =>
+export const GetBoardContentOptions = ({
+	id,
+	include_task,
+}: {
+	id?: string;
+	include_task?: boolean;
+}) =>
 	queryOptions({
-		queryKey: ["board content", id],
+		queryKey: ["board content", { id, include_task: !!include_task }],
 		queryFn: async () => {
 			if (!id) {
 				return null;
 			}
-			const response = await getBoard({ path: { boardId: id } });
+			const response = await getBoard({
+				path: { boardId: id },
+				query: { include_task: !!include_task },
+			});
 			if (!response || !response.data) {
 				throw new Error(
 					`Failed to fetch board content: ${response.error.detail}`
@@ -101,8 +110,14 @@ export const GetBoardContentOptions = (id?: string) =>
 		enabled: !!id,
 	});
 
-export const useGetBoard = (id?: string) => {
-	return useSuspenseQuery(GetBoardContentOptions(id));
+export const useGetBoard = ({
+	id,
+	include_task,
+}: {
+	id?: string;
+	include_task?: boolean;
+}) => {
+	return useQuery(GetBoardContentOptions({ id, include_task }));
 };
 
 export const useUpdateBoard = () => {
@@ -119,6 +134,7 @@ export const useUpdateBoard = () => {
 		mutationKey: ["update board"],
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["my boards"] });
+			queryClient.invalidateQueries({ queryKey: ["board content"] });
 		},
 	});
 };

@@ -33,7 +33,7 @@ export const CreateBoardForm = ({
 	const { mutate: createBoard, isPending: isCreating } = useCreateBoard();
 	const { mutate: updateBoard, isPending: isUpdating } = useUpdateBoard();
 
-	const { data, refetch } = useGetBoard(boardID);
+	const { data } = useGetBoard({ id: boardID });
 
 	const form = useForm<z.infer<typeof newBoardSchema>>({
 		resolver: zodResolver(newBoardSchema),
@@ -77,7 +77,6 @@ export const CreateBoardForm = ({
 				},
 				{
 					onSuccess(data) {
-						console.log(data);
 						handleSuccess();
 					},
 				}
@@ -100,7 +99,7 @@ export const CreateBoardForm = ({
 				{
 					onSuccess: () => {
 						handleSuccess();
-						refetch();
+						// refetch();
 					},
 				}
 			);

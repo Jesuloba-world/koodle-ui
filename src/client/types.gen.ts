@@ -806,13 +806,24 @@ export type DeleteBoardResponse = DeleteBoardResponses[keyof DeleteBoardResponse
 
 export type GetBoardData = {
     body?: never;
+    headers?: {
+        /**
+         * Bearer [token]
+         */
+        Authorization?: string;
+    };
     path: {
         /**
          * ID of board
          */
         boardId: string;
     };
-    query?: never;
+    query?: {
+        /**
+         * Whether to include tasks in the board response
+         */
+        include_task?: boolean;
+    };
     url: '/boards/{boardId}';
 };
 
