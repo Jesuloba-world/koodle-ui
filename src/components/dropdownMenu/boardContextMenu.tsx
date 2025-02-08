@@ -8,9 +8,11 @@ import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { CreateBoardDialog } from "../dialog/createBoard";
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { DeleteBoard } from "../dialog/deleteBoard";
 
 export const BoardContextMenu = ({ children }: { children: ReactNode }) => {
 	const [openEdit, setOpenEdit] = useState(false);
+	const [openDelete, setOpenDelete] = useState(false);
 	const [openDropDown, setOpenDropdown] = useState(false);
 
 	const { boardID } = useParams<{ boardID: string }>();
@@ -19,12 +21,21 @@ export const BoardContextMenu = ({ children }: { children: ReactNode }) => {
 		setOpenEdit(true);
 	};
 
+	const handleDeleteClick = () => {
+		setOpenDelete(true);
+	};
+
 	return (
 		<>
 			<CreateBoardDialog
 				boardId={boardID}
 				open={openEdit}
 				onOpenChange={setOpenEdit}
+			/>
+			<DeleteBoard
+				boardId={boardID}
+				open={openDelete}
+				onOpenChange={setOpenDelete}
 			/>
 			<DropdownMenu
 				open={openDropDown}
@@ -44,7 +55,10 @@ export const BoardContextMenu = ({ children }: { children: ReactNode }) => {
 					>
 						<p className="body-l">Edit Board</p>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="py-2 px-4 cursor-pointer">
+					<DropdownMenuItem
+						className="py-2 px-4 cursor-pointer"
+						onClick={handleDeleteClick}
+					>
 						<p className="body-l text-destructive">Delete Board</p>
 					</DropdownMenuItem>
 				</DropdownMenuContent>

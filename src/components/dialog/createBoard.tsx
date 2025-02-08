@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { CreateBoardForm } from "@/components/forms/createBoard";
 import VisuallyHidden from "@/components/ui/visuallyHidden";
 import { useControllableState } from "@/hooks/use-controllable-state";
@@ -43,7 +43,7 @@ export const CreateBoardDialog = ({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>
+					<DialogTitle className="heading-l">
 						{boardId ? "Edit Board" : "Add New Board"}
 					</DialogTitle>
 					<VisuallyHidden>

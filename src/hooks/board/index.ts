@@ -10,6 +10,7 @@ import {
 	UpdateBoardReqBody,
 	client,
 	createBoard,
+	deleteBoard,
 	getAllMyBoards,
 	getBoard,
 	updateBoard,
@@ -116,6 +117,18 @@ export const useUpdateBoard = () => {
 			data: UpdateBoardReqBody;
 		}) => updateBoard({ body: data, path: { boardId } }),
 		mutationKey: ["update board"],
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["my boards"] });
+		},
+	});
+};
+
+export const useDeleteBoard = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (id: string) => deleteBoard({ path: { boardId: id } }),
+		mutationKey: ["delete board"],
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["my boards"] });
 		},
