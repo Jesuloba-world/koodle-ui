@@ -29,7 +29,6 @@ export const CreateBoardForm = ({
 	close: () => void;
 	boardID?: string;
 }) => {
-	const {} = useParams<{ boardID: string }>();
 	const { mutate: createBoard, isPending: isCreating } = useCreateBoard();
 	const { mutate: updateBoard, isPending: isUpdating } = useUpdateBoard();
 

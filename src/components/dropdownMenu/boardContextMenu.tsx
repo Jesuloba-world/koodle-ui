@@ -44,7 +44,7 @@ export const BoardContextMenu = ({ children }: { children: ReactNode }) => {
 			>
 				<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 				<DropdownMenuContent
-					className="bg-background w-[192px] rounded-lg shadow-[0px_10px_20px_0px_rgba(54,78,126,0.25)] py-2"
+					className="w-[192px] rounded-lg shadow-[0px_10px_20px_0px_rgba(54,78,126,0.25)] py-2"
 					side="bottom"
 					align="end"
 					sideOffset={22}
