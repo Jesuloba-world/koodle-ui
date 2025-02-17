@@ -14,6 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
+import { useAddTask } from "@/hooks/task";
 
 const taskSchema = z.object({
 	title: z.string().min(1, { message: "Can't be empty" }),
@@ -36,6 +37,8 @@ export const EditTaskForm = ({
 	taskID?: string;
 	boardID: string;
 }) => {
+	const { mutate: addTask, isPending: isAdding } = useAddTask();
+
 	const { data } = useGetBoard({ id: boardID });
 	const columns =
 		data?.board?.columns?.map((col) => ({
@@ -60,6 +63,24 @@ export const EditTaskForm = ({
 
 	function onSubmit(values: z.infer<typeof taskSchema>) {
 		console.log(values);
+		if (!taskID) {
+			addTask(
+				{
+					boardId: boardID,
+					columnId: values.status,
+					task: {
+						title: values.title,
+						description: values.description,
+						subtasks: values.subTasks,
+					},
+				},
+				{
+					onSuccess(data) {
+						handleSuccess();
+					},
+				}
+			);
+		}
 	}
 
 	const handleSuccess = () => {
@@ -67,7 +88,7 @@ export const EditTaskForm = ({
 		form.reset();
 	};
 
-	const isPending = false;
+	const isPending = isAdding;
 
 	return (
 		<Form {...form}>

@@ -8,51 +8,15 @@ import {
 import {
 	CreateBoardReqBody,
 	UpdateBoardReqBody,
-	client,
 	createBoard,
 	deleteBoard,
 	getAllMyBoards,
 	getBoard,
 	updateBoard,
 } from "@/client";
-import { getSession, signOut } from "next-auth/react";
-import { auth } from "@/auth";
+import { initClient } from "../initClient";
 
-client.setConfig({
-	baseURL: process.env.NEXT_PUBLIC_API_URL!,
-});
-
-if (typeof window !== "undefined") {
-	// Client-side interceptor
-	client.instance.interceptors.request.use(async (config) => {
-		const session = await getSession();
-
-		if (!session?.token) {
-			await signOut({
-				redirect: true,
-				redirectTo: "/auth/login",
-			});
-		}
-
-		config.headers.Authorization = `Bearer ${session?.token}`;
-		return config;
-	});
-} else {
-	// Server-side interceptor
-	client.instance.interceptors.request.use(async (config) => {
-		const session = await auth();
-
-		if (!session?.token) {
-			await signOut({
-				redirect: true,
-				redirectTo: "/auth/login",
-			});
-		}
-
-		config.headers.Authorization = `Bearer ${session?.token}`;
-		return config;
-	});
-}
+initClient();
 
 export const useCreateBoard = () => {
 	const queryClient = useQueryClient();
